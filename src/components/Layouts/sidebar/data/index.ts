@@ -11,11 +11,17 @@ export const NAV_DATA = [
         items: [],
       },
       {
+        title: "Members",
+        url: "/dashboard/members",
+        icon: Icons.User,
+        items: [],
+      },
+      {
         title: "Calendar",
         url: "/dashboard/calendar",
         icon: Icons.Calendar,
         items: [],
-      }
+      },      
     ],
   },
 ];
