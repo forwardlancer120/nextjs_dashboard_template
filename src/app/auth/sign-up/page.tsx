@@ -1,5 +1,4 @@
-import Signin from "@/components/Auth/Signin";
-// import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Signup from "@/components/Auth/Signup";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,16 +7,14 @@ export const metadata: Metadata = {
   title: "Sign in",
 };
 
-export default function SignIn() {
+export default function SignUp() {
   return (
-    <div className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
-      {/* <Breadcrumb pageName="Sign In" /> */}
-
+    <div className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">      
       <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
         <div className="flex flex-wrap items-center">
           <div className="w-full xl:w-1/2">
             <div className="w-full p-4 sm:p-12.5 xl:p-15">
-              <Signin />
+              <Signup />
             </div>
           </div>
 
@@ -40,7 +37,7 @@ export default function SignIn() {
                 />
               </Link>
               <p className="mb-3 text-xl font-medium text-dark dark:text-white">
-                Sign in to your account
+                Sign up to your account
               </p>
 
               <h1 className="mb-4 text-2xl font-bold text-dark dark:text-white sm:text-heading-3">
@@ -48,7 +45,7 @@ export default function SignIn() {
               </h1>
 
               <p className="w-full max-w-[375px] font-medium text-dark-4 dark:text-dark-6">
-                Please sign in to your account by completing the necessary
+                Please sign up to your account by completing the necessary
                 fields below
               </p>
 
