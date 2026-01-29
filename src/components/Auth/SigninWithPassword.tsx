@@ -5,31 +5,45 @@ import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
 import { Checkbox } from "../FormElements/checkbox";
 import { signInWithEmail } from "@/services/auth.api.servics";
+import { useFormValidation } from "@/hooks/use-form-validation";
 
 export default function SigninWithPassword() {
   // const router = useRouter();
-  const [data, setData] = useState({
-    email: process.env.NEXT_PUBLIC_DEMO_USER_MAIL || "",
-    password: process.env.NEXT_PUBLIC_DEMO_USER_PASS || "",
+  const { values, errors, handleChange, validate } = useFormValidation({
+    email: '',
+    password: '',
     remember: false,
   });
 
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // Validation rules
+  const validationRules = (vals: typeof values) => {
+    const errs: typeof errors = {};
+    if (!vals.email.trim()) {
+      errs.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(vals.email)) {
+      errs.email = "Email is invalid";
+    }
+
+    if (!vals.password.trim()) {
+      errs.password = "Password is required";
+    } else if (vals.password.length < 8) {
+      errs.password = "Password must be at least 8 characters long";
+    }
+
+    return errs;
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!validate(validationRules)) return;
+
     // You can remove this code block
     setLoading(true);
 
-    signInWithEmail(data).then((res) => {      
+    signInWithEmail(values).then((res) => {      
       localStorage.setItem('token', res.access_token);
       window.location.href = "/dashboard";      
     }).catch((err) => {
@@ -50,8 +64,9 @@ export default function SigninWithPassword() {
         placeholder="Enter your email"
         name="email"
         handleChange={handleChange}
-        value={data.email}
+        value={values.email}
         icon={<EmailIcon />}
+        error={errors.email}
       />
 
       <InputGroup
@@ -61,8 +76,9 @@ export default function SigninWithPassword() {
         placeholder="Enter your password"
         name="password"
         handleChange={handleChange}
-        value={data.password}
+        value={values.password}
         icon={<PasswordIcon />}
+        error={errors.password}
       />
 
       <div className="mb-6 flex items-center justify-between gap-2 py-2 font-medium">
@@ -72,12 +88,8 @@ export default function SigninWithPassword() {
           withIcon="check"
           minimal
           radius="md"
-          onChange={(e) =>
-            setData({
-              ...data,
-              remember: e.target.checked,
-            })
-          }
+          onChange={handleChange}
+          checked={values.remember}
         />
 
         <Link

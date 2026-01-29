@@ -17,6 +17,7 @@ type InputGroupProps = {
   iconPosition?: "left" | "right";
   height?: "sm" | "default";
   defaultValue?: string;
+  error?: string;
 };
 
 const InputGroup: React.FC<InputGroupProps> = ({
@@ -66,6 +67,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
               : "px-5.5 py-3 text-dark placeholder:text-dark-6 dark:text-white",
             props.iconPosition === "left" && "pl-12.5",
             props.height === "sm" && "py-2.5",
+            props.error && "border-red focus:border-red",
           )}
           required={required}
           disabled={disabled}
@@ -74,6 +76,9 @@ const InputGroup: React.FC<InputGroupProps> = ({
 
         {icon}
       </div>
+      {props.error && (
+        <p className="mt-1 text-sm text-red">{props.error}</p>
+      )}
     </div>
   );
 };

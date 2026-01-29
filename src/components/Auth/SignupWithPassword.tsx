@@ -4,34 +4,58 @@ import { UserIcon, EmailIcon, PasswordIcon } from "@/assets/icons";
 import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
 import { signUpWithEmail } from "@/services/auth.api.servics";
+import { useFormValidation } from "@/hooks/use-form-validation";
 // import { Checkbox } from "../FormElements/checkbox";
 
 export default function SignupWithPassword() {
-  const [data, setData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirm_password: "",
-    remember: false,
+  const {
+    values,
+    errors,
+    handleChange,
+    validate
+  } = useFormValidation({
+    username: '',
+    email: '',
+    password: '',
+    confirm_password: ''
   });
 
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
+  const validationRules = (vals: typeof values) => {
+    const errs: typeof errors = {};
+
+    if (!vals.username.trim()) {
+      errs.username = "Name is required";
+    }
+
+    if (!vals.email.trim()) {
+      errs.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(vals.email)) {
+      errs.email = "Email is invalid";
+    }
+
+    if (!vals.password.trim()) {
+      errs.password = "Password is required";
+    } else if (vals.password.length < 8) {
+      errs.password = "Password must be at least 8 characters long";
+    }
+
+    if (vals.password !== vals.confirm_password) {
+      errs.confirm_password = "Passwords do not match";
+    }
+
+    return errs;
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (!validate(validationRules)) return;
     // You can remove this code block
     setLoading(true);
 
-    if(data.password == data.confirm_password){
-      signUpWithEmail(data).then((res) => {
+    if(values.password == values.confirm_password){
+      signUpWithEmail(values).then((res) => {
         console.log('User signed up successfully:', res);
         localStorage.setItem('token', res.access_token);
       }).catch((err) => {
@@ -53,8 +77,9 @@ export default function SignupWithPassword() {
         placeholder="Enter your name"
         name="username"
         handleChange={handleChange}
-        value={data.username}
+        value={values.username}
         icon={<UserIcon />}
+        error={errors.username}
       />
 
       <InputGroup
@@ -64,8 +89,9 @@ export default function SignupWithPassword() {
         placeholder="Enter your email"
         name="email"
         handleChange={handleChange}
-        value={data.email}
+        value={values.email}
         icon={<EmailIcon />}
+        error={errors.email}
       />
 
       <InputGroup
@@ -75,8 +101,9 @@ export default function SignupWithPassword() {
         placeholder="Enter your password"
         name="password"
         handleChange={handleChange}
-        value={data.password}
+        value={values.password}
         icon={<PasswordIcon />}
+        error={errors.password}
       />
 
       <InputGroup
@@ -86,8 +113,9 @@ export default function SignupWithPassword() {
         placeholder="Enter your confirm password"
         name="confirm_password"
         handleChange={handleChange}
-        value={data.confirm_password}
+        value={values.confirm_password}
         icon={<PasswordIcon />}
+        error={errors.confirm_password}
       />
 
       <div className="mb-4.5">
