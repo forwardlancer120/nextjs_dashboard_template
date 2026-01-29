@@ -10,8 +10,18 @@ export async function signUpWithEmail(payload: {username: string, email: string,
     });
 
     if(!res.ok) {
-        const err = await res.json();
-        throw new Error(err || 'Failed to sign up');
+        let errorMessage = 'Failed to sign up';
+        try {
+            const err = await res.json();
+            errorMessage = err.detail || JSON.stringify(err);
+        } catch {
+            // Ignore JSON parsing errors
+            const text = await res.text();
+            if (text) {
+                errorMessage = text;
+            }
+        }
+        throw new Error(errorMessage);
     }
 
     return res.json();

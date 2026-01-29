@@ -1,11 +1,9 @@
 "use client";
 import { UserIcon, EmailIcon, PasswordIcon } from "@/assets/icons";
-// import Link from "next/link";
 import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
 import { signUpWithEmail } from "@/services/auth.api.servics";
 import { useFormValidation } from "@/hooks/use-form-validation";
-// import { Checkbox } from "../FormElements/checkbox";
 
 export default function SignupWithPassword() {
   const {
@@ -19,6 +17,8 @@ export default function SignupWithPassword() {
     password: '',
     confirm_password: ''
   });
+
+  const [apiErr, setApiError] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -48,24 +48,22 @@ export default function SignupWithPassword() {
     return errs;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
     if (!validate(validationRules)) return;
-    // You can remove this code block
+  
     setLoading(true);
 
-    if(values.password == values.confirm_password){
-      signUpWithEmail(values).then((res) => {
-        console.log('User signed up successfully:', res);
-        localStorage.setItem('token', res.access_token);
-      }).catch((err) => {
-        console.error('Error signing up:', err);
-      });
+    try {
+        const data = await signUpWithEmail(values);
+        localStorage.setItem('token', data.access_token);                
+    } catch (err: any) {
+        setApiError(err.message || 'Something went wrong');
+    } finally {
+        setLoading(false);
     }
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
   };
 
   return (
@@ -128,6 +126,11 @@ export default function SignupWithPassword() {
             <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent dark:border-primary dark:border-t-transparent" />
           )}
         </button>
+        {apiErr && (
+          <p className="mt-2 w-full text-sm text-red-500 text-center">
+            {apiErr}
+          </p>
+        )}
       </div>
     </form>
   );
