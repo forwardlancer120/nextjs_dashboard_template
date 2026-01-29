@@ -1,3 +1,5 @@
+import { error } from "console";
+
 const apiBase = process.env.NEXT_PUBLIC_API_BASE;
 
 export async function signUpWithEmail(payload: {username: string, email: string, password: string }) {
@@ -37,8 +39,17 @@ export async function signInWithEmail(payload: {email: string, password: string 
     });
 
     if(!res.ok) {
-        const err = await res.json();
-        throw new Error(err || 'Failed to sign in');
+        let errorMessage = 'Failed to sign in';
+        try {
+            const err = await res.json();
+            errorMessage = err.detail || JSON.stringify(err);
+        } catch {
+            const text = await res.text();
+            if (text) {
+                errorMessage = text;
+            }
+        }              
+        throw new Error(errorMessage);
     }
 
     return res.json();

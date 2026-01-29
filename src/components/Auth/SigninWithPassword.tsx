@@ -15,6 +15,8 @@ export default function SigninWithPassword() {
     remember: false,
   });
 
+  const [apiErr, setApiError] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(false);
 
   // Validation rules
@@ -35,7 +37,7 @@ export default function SigninWithPassword() {
     return errs;
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validate(validationRules)) return;
@@ -43,16 +45,16 @@ export default function SigninWithPassword() {
     // You can remove this code block
     setLoading(true);
 
-    signInWithEmail(values).then((res) => {      
-      localStorage.setItem('token', res.access_token);
-      window.location.href = "/dashboard";      
-    }).catch((err) => {
-      console.error('Error signing in:', err);
-    });
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+    try {
+        const data = await signInWithEmail(values);
+        localStorage.setItem('token', data.access_token);
+        window.location.href = "/dashboard";
+        // optionally redirect or store token
+    } catch (err: any) {
+        setApiError(err.message || 'Something went wrong');
+    } finally {
+        setLoading(false);
+    }
   };
 
   return (
@@ -110,6 +112,11 @@ export default function SigninWithPassword() {
             <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent dark:border-primary dark:border-t-transparent" />
           )}
         </button>
+        {apiErr && (
+          <p className="mt-2 w-full text-sm text-red-500 text-center">
+            {apiErr}
+          </p>
+        )}
       </div>
     </form>
   );
