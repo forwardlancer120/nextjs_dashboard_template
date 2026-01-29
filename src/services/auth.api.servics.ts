@@ -1,5 +1,3 @@
-import { error } from "console";
-
 const apiBase = process.env.NEXT_PUBLIC_API_BASE;
 
 export async function signUpWithEmail(payload: {username: string, email: string, password: string }) {
