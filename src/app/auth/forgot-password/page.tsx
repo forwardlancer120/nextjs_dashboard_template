@@ -1,13 +1,13 @@
-import Signin from "@/components/Auth/Signin";
+import Forgotpassword from "@/components/Auth/Forgotpassword";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Sign in",
+  title: "Forgot Password",
 };
 
-export default function SignIn() {
+export default function ForgotPassword() {
   return (
     <div className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
 
@@ -15,7 +15,7 @@ export default function SignIn() {
         <div className="flex flex-wrap items-center">
           <div className="w-full xl:w-1/2">
             <div className="w-full p-4 sm:p-12.5 xl:p-15">
-              <Signin />
+              <Forgotpassword />
             </div>
           </div>
 
@@ -37,17 +37,13 @@ export default function SignIn() {
                   height={32}
                 />
               </Link>
-              <p className="mb-3 text-xl font-medium text-dark dark:text-white">
-                Sign in to your account
-              </p>
 
               <h1 className="mb-4 text-2xl font-bold text-dark dark:text-white sm:text-heading-3">
-                Welcome Back!
+                Forgot Your Password?
               </h1>
 
               <p className="w-full max-w-[375px] font-medium text-dark-4 dark:text-dark-6">
-                Please sign in to your account by completing the necessary
-                fields below
+                No worries! Enter your email and we’ll send you instructions to reset your password.
               </p>
 
               <div className="mt-31">
