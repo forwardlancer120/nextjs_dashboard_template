@@ -9,7 +9,7 @@ const AuthGuard = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (token) {
+    if (!token) {
       router.replace("/auth/sign-in");
     } else {
       router.replace("/dashboard");

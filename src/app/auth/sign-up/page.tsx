@@ -37,7 +37,7 @@ export default function SignUp() {
                 />
               </Link>
               <p className="mb-3 text-xl font-medium text-dark dark:text-white">
-                Sign up to your account
+                Sign up to Dashboard
               </p>
 
               <h1 className="mb-4 text-2xl font-bold text-dark dark:text-white sm:text-heading-3">
@@ -45,7 +45,7 @@ export default function SignUp() {
               </h1>
 
               <p className="w-full max-w-[375px] font-medium text-dark-4 dark:text-dark-6">
-                Please sign up to your account by completing the necessary
+                Please sign up to Dashboard by completing the necessary
                 fields below
               </p>
 

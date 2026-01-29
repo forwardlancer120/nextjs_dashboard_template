@@ -1,9 +1,10 @@
 "use client";
 import { UserIcon, EmailIcon, PasswordIcon } from "@/assets/icons";
-import Link from "next/link";
+// import Link from "next/link";
 import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
-import { Checkbox } from "../FormElements/checkbox";
+import { signUpWithEmail } from "@/services/auth.api.servics";
+// import { Checkbox } from "../FormElements/checkbox";
 
 export default function SignupWithPassword() {
   const [data, setData] = useState({
@@ -28,6 +29,15 @@ export default function SignupWithPassword() {
 
     // You can remove this code block
     setLoading(true);
+
+    if(data.password == data.confirm_password){
+      signUpWithEmail(data).then((res) => {
+        console.log('User signed up successfully:', res);
+        localStorage.setItem('token', res.access_token);
+      }).catch((err) => {
+        console.error('Error signing up:', err);
+      });
+    }
 
     setTimeout(() => {
       setLoading(false);
