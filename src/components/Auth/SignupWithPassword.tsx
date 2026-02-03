@@ -2,7 +2,7 @@
 import { UserIcon, EmailIcon, PasswordIcon } from "@/assets/icons";
 import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
-import { signUpWithEmail } from "@/services/auth.api.servics";
+import { signUpWithEmail } from "@/services/auth.api.services";
 import { useFormValidation } from "@/hooks/use-form-validation";
 
 export default function SignupWithPassword() {

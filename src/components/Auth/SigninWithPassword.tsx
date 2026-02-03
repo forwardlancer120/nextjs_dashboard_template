@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
 import { Checkbox } from "../FormElements/checkbox";
-import { signInWithEmail } from "@/services/auth.api.servics";
+import { signInWithEmail } from "@/services/auth.api.services";
 import { useFormValidation } from "@/hooks/use-form-validation";
 
 export default function SigninWithPassword() {
