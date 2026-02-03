@@ -1,7 +1,7 @@
 const apiBase = process.env.NEXT_PUBLIC_API_BASE;
 
 export async function signUpWithEmail(payload: {username: string, email: string, password: string }) {
-    const res = await fetch(`${apiBase}/register`, {
+    const res = await fetch(`${apiBase}/auth/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ export async function signUpWithEmail(payload: {username: string, email: string,
 }
 
 export async function signInWithEmail(payload: {email: string, password: string }) {
-    const res = await fetch(`${apiBase}/login`, {
+    const res = await fetch(`${apiBase}/auth/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
